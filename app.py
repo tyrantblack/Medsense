@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+import numpy as np
 
 # -----------------------------
 # Load Data
@@ -27,6 +28,8 @@ def compute_risk(row):
         score += 1
     if row['RR'] < 12 or row['RR'] > 20:
         score += 1
+
+    # Add condition flags if present
     condition_cols = [c for c in df.columns if c not in ['PatientID','HR','SpO₂','Temp','RR']]
     for col in condition_cols:
         if row[col] == 1:
@@ -62,23 +65,64 @@ col3.metric("Moderate", moderate)
 col4.metric("Critical", critical)
 
 # -----------------------------
-# Alerts
+# Alerts (Professional Style)
 # -----------------------------
-st.subheader("🚨 Alerts")
+st.subheader("🚨 Alerts & Recommendations")
+
 if critical > 0:
-    st.error(f"⚠️ {critical} patients in CRITICAL condition! Immediate action required.")
+    st.error(f"🛑 {critical} Patient(s) in CRITICAL condition! \n\n"
+             f"➡ Immediate medical intervention required.\n"
+             f"➡ Review vitals and prioritize triage.")
 if moderate > 0:
-    st.warning(f"⚠️ {moderate} patients in MODERATE condition. Please review.")
+    st.warning(f"⚠️ {moderate} Patient(s) in MODERATE condition. \n\n"
+               f"➡ Continuous monitoring recommended.\n"
+               f"➡ Escalate if vitals deteriorate.")
+if stable > 0:
+    st.success(f"✅ {stable} Patient(s) are currently Stable. \n\n"
+               f"➡ No urgent action needed.\n"
+               f"➡ Continue routine monitoring.")
 
 # -----------------------------
 # Patient Table
 # -----------------------------
 st.subheader("📋 Patient Risk Overview")
-st.dataframe(df[['Patient_ID','HR','SpO₂','Temp','RR','RiskScore','Status']])
+st.dataframe(df[['PatientID','HR','SpO₂','Temp','RR','RiskScore','Status']])
 
 # -----------------------------
-# Visualizations
+# Vital Trends
 # -----------------------------
-st.subheader("📈 Vitals Trends")
-fig_pie = px.pie(df, names="Status", title="Risk Category Distribution")
+st.subheader("📈 Vital Signs Trends")
+
+# Line chart trends (requires PatientID to simulate over time)
+fig_hr = px.line(df, x="PatientID", y="HR", color="Status", markers=True, title="Heart Rate Trend")
+fig_spo2 = px.line(df, x="PatientID", y="SpO₂", color="Status", markers=True, title="SpO₂ Trend")
+fig_temp = px.line(df, x="PatientID", y="Temp", color="Status", markers=True, title="Temperature Trend")
+fig_rr = px.line(df, x="PatientID", y="RR", color="Status", markers=True, title="Respiratory Rate Trend")
+
+st.plotly_chart(fig_hr, use_container_width=True)
+st.plotly_chart(fig_spo2, use_container_width=True)
+st.plotly_chart(fig_temp, use_container_width=True)
+st.plotly_chart(fig_rr, use_container_width=True)
+
+# -----------------------------
+# Risk Distribution
+# -----------------------------
+st.subheader("📊 Risk Distribution Overview")
+fig_pie = px.pie(df, names="Status", title="Patient Risk Category Distribution")
 st.plotly_chart(fig_pie, use_container_width=True)
+
+# -----------------------------
+# Automated Suggestions
+# -----------------------------
+st.subheader("💡 AI-Based Suggestions")
+
+for idx, row in df.iterrows():
+    if row['Status'] == "Critical":
+        st.error(f"Patient {row['PatientID']} → CRITICAL ⚠️ \n"
+                 f"👉 Suggestion: Immediate doctor review required. Consider oxygen support or ICU transfer.")
+    elif row['Status'] == "Moderate":
+        st.warning(f"Patient {row['PatientID']} → MODERATE ⚠️ \n"
+                   f"👉 Suggestion: Monitor every 30 mins. Schedule physician check-up.")
+    else:
+        st.success(f"Patient {row['PatientID']} → Stable ✅ \n"
+                   f"👉 Suggestion: Routine monitoring only.")
