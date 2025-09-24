@@ -118,11 +118,11 @@ st.subheader("💡 AI-Based Suggestions")
 
 for idx, row in df.iterrows():
     if row['Status'] == "Critical":
-        st.error(f"Patient {row['PatientID']} → CRITICAL ⚠️ \n"
+        st.error(f"Patient {row['Patient_ID']} → CRITICAL ⚠️ \n"
                  f"👉 Suggestion: Immediate doctor review required. Consider oxygen support or ICU transfer.")
     elif row['Status'] == "Moderate":
-        st.warning(f"Patient {row['PatientID']} → MODERATE ⚠️ \n"
+        st.warning(f"Patient {row['Patient_ID']} → MODERATE ⚠️ \n"
                    f"👉 Suggestion: Monitor every 30 mins. Schedule physician check-up.")
     else:
-        st.success(f"Patient {row['PatientID']} → Stable ✅ \n"
+        st.success(f"Patient {row['Patient_ID']} → Stable ✅ \n"
                    f"👉 Suggestion: Routine monitoring only.")
