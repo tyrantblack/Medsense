@@ -21,13 +21,13 @@ def compute_risk(row):
     score = 0
     if row['HR'] < 60 or row['HR'] > 100:
         score += 1
-    if row['SpO2'] < 95:
+    if row['SpO₂'] < 95:
         score += 1
     if row['Temp'] < 36 or row['Temp'] > 37.5:
         score += 1
     if row['RR'] < 12 or row['RR'] > 20:
         score += 1
-    condition_cols = [c for c in df.columns if c not in ['PatientID','HR','SpO2','Temp','RR']]
+    condition_cols = [c for c in df.columns if c not in ['PatientID','HR','SpO₂','Temp','RR']]
     for col in condition_cols:
         if row[col] == 1:
             score += 1
@@ -74,7 +74,7 @@ if moderate > 0:
 # Patient Table
 # -----------------------------
 st.subheader("📋 Patient Risk Overview")
-st.dataframe(df[['PatientID','HR','SpO2','Temp','RR','RiskScore','Status']])
+st.dataframe(df[['PatientID','HR','SpO₂','Temp','RR','RiskScore','Status']])
 
 # -----------------------------
 # Visualizations
