@@ -30,7 +30,7 @@ def compute_risk(row):
         score += 1
 
     # Add condition flags if present
-    condition_cols = [c for c in df.columns if c not in ['PatientID','HR','SpO₂','Temp','RR']]
+    condition_cols = [c for c in df.columns if c not in ['Patient_ID','HR','SpO₂','Temp','RR']]
     for col in condition_cols:
         if row[col] == 1:
             score += 1
@@ -86,7 +86,7 @@ if stable > 0:
 # Patient Table
 # -----------------------------
 st.subheader("📋 Patient Risk Overview")
-st.dataframe(df[['PatientID','HR','SpO₂','Temp','RR','RiskScore','Status']])
+st.dataframe(df[['Patient_ID','HR','SpO₂','Temp','RR','RiskScore','Status']])
 
 # -----------------------------
 # Vital Trends
@@ -94,10 +94,10 @@ st.dataframe(df[['PatientID','HR','SpO₂','Temp','RR','RiskScore','Status']])
 st.subheader("📈 Vital Signs Trends")
 
 # Line chart trends (requires PatientID to simulate over time)
-fig_hr = px.line(df, x="PatientID", y="HR", color="Status", markers=True, title="Heart Rate Trend")
-fig_spo2 = px.line(df, x="PatientID", y="SpO₂", color="Status", markers=True, title="SpO₂ Trend")
-fig_temp = px.line(df, x="PatientID", y="Temp", color="Status", markers=True, title="Temperature Trend")
-fig_rr = px.line(df, x="PatientID", y="RR", color="Status", markers=True, title="Respiratory Rate Trend")
+fig_hr = px.line(df, x="Patient_ID", y="HR", color="Status", markers=True, title="Heart Rate Trend")
+fig_spo2 = px.line(df, x="Patient_ID", y="SpO₂", color="Status", markers=True, title="SpO₂ Trend")
+fig_temp = px.line(df, x="Patient_ID", y="Temp", color="Status", markers=True, title="Temperature Trend")
+fig_rr = px.line(df, x="Patient_ID", y="RR", color="Status", markers=True, title="Respiratory Rate Trend")
 
 st.plotly_chart(fig_hr, use_container_width=True)
 st.plotly_chart(fig_spo2, use_container_width=True)
