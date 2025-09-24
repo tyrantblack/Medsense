@@ -74,7 +74,7 @@ if moderate > 0:
 # Patient Table
 # -----------------------------
 st.subheader("📋 Patient Risk Overview")
-st.dataframe(df[['PatientID','HR','SpO₂','Temp','RR','RiskScore','Status']])
+st.dataframe(df[['Patient_ID','HR','SpO₂','Temp','RR','RiskScore','Status']])
 
 # -----------------------------
 # Visualizations
